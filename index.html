@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Website</title>
+</head>
+<body>
+  <h1>My Website</h1>
+  <p>This is my website. It can get app info about your device.</p>
+  <script>
+    function getAppInfo() {
+      // Get the device's name.
+      var deviceName = navigator.userAgent.match(/(iPhone|iPad|Android|Windows Phone)/)[0];
+      // Get the device's operating system.
+      var osName = navigator.userAgent.match(/(iPhone OS|Android|Windows Phone OS)/)[0];
+      // Get the device's screen size.
+      var screenSize = screen.width + "x" + screen.height;
+      // Get the device's IMEI number.
+      var imeiNumber = navigator.device.imei;
+      // Get the device's serial number.
+      var serialNumber = navigator.device.serialNumber;
+      // Check if the device is stolen.
+      var isStolen = isDeviceStolen(imeiNumber);
+      // Display the app info on the page.
+      document.getElementById("appInfo").innerHTML = "Device name: " + deviceName + "<br>Operating system: " + osName + "<br>Screen size: " + screenSize + "<br>IMEI number: " + imeiNumber + "<br>Serial number: " + serialNumber + "<br>Is stolen: " + isStolen;
+    }
+    
+    function isDeviceStolen(imeiNumber) {
+      // Make a request to the stolen device database.
+      var request = new XMLHttpRequest();
+      request.open("GET", "https://stolen-devices.com/api/v1/devices/" + imeiNumber);
+      request.onload = function() {
+        if (request.status === 200) {
+          // The device is stolen.
+          return true;
+        } else {
+          // The device is not stolen.
+          return false;
+        }
+      };
+      request.send();
+    }
+  </script>
+  <div id="appInfo"></div>
+</body>
+</html>
